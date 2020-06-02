@@ -9,13 +9,31 @@ CORS(app, support_credentials=True)
 
 app.config['Secret'] = "Secret"
 
+
 @app.route('/', methods=['GET']) # To prevent Cors issues
 @cross_origin(supports_credentials=True)
 def index():
-    response = scrap_html_content(
-        request.args.get('secret_key'),
-        request.args.get('selector'),
-        request.args.get('url')
+    response = jsonify(
+                {
+                    'status':'success',
+                    'message': 'Welcome to Selenium-fetch-api mabe by sanix-darker, \
+                                please check the documentation of the API here : '
+                }
+            )
+    # Let's allow all Origin requests
+    response.headers.add('Access-Control-Allow-Origin', '*') # To prevent Cors issues
+    return response
+
+
+@app.route('/get', methods=['GET']) # To prevent Cors issues
+@cross_origin(supports_credentials=True)
+def get_method():
+    response = jsonify(
+        scrap_html_content(
+            request.args.get('secret_key'),
+            request.args.get('selector'),
+            request.args.get('url')
+        )
     )
     # Let's allow all Origin requests
     response.headers.add('Access-Control-Allow-Origin', '*') # To prevent Cors issues

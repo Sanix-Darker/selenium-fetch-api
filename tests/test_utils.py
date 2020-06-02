@@ -1,7 +1,9 @@
 # list of all relevants tests for the project
 
+import os, sys
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+
 from app.utils import *
-from app.settings import SECRET_KEY
 
 
 def test_utils_scrap_html_content():
@@ -10,10 +12,13 @@ def test_utils_scrap_html_content():
 
     """
 
-    selector = "//div//h1"
-    url = "http://example.com/"
+    selector = b64_encode("//div//h1")
+    url = b64_encode("http://example.com/")
+    SECRET_KEY = b64_encode("darker_san")
 
-    assert str(scrap_html_content(SECRET_KEY, selector, url)) == "<h1>Example Domain</h1>"
+    response = scrap_html_content(SECRET_KEY, selector, url)
+
+    assert (response["status"] == "success" and response["result"] == "<h1>Example Domain</h1>")
 
 def test_utils_base64_encode():
     """

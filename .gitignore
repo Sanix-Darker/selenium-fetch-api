@@ -3,3 +3,7 @@ config.txt
 .idea
 .vscode
 *__pycache__
+venv
+geckodriver.log
+*.log
+bin/*

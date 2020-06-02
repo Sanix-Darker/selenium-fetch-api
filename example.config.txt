@@ -1,2 +1,3 @@
 [conf]
 SECRET_KEY=the_secret_key
+GECKO_PATH=./bin/geckodriver

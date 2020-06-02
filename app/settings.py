@@ -7,3 +7,4 @@ configParser.read(configFilePath)
 
 # Filling parameters
 SECRET_KEY = configParser.get('conf', 'SECRET_KEY')
+GECKO_PATH = configParser.get('conf', 'GECKO_PATH')

@@ -1,14 +1,17 @@
 # coding: utf-8
 
-from flask import jsonify
-import requests
-import json
-
 import base64
 
 from app.classes.SeleniumScrap import SeleniumScrap
 from app.settings import SECRET_KEY
 
+import sys, traceback
+
+
+def get_trace():
+    print("-"*60)
+    traceback.print_exc(file=sys.stdout)
+    print("-"*60)
 
 
 def scrap_html_content(secret_key, selector, url):
@@ -22,32 +25,39 @@ def scrap_html_content(secret_key, selector, url):
     """
 
     if secret_key is not None and url is not None and selector is not None:
+        secret_key = b64_decode(secret_key)
+        url = b64_decode(url)
+        selector = b64_decode(selector)
 
         if secret_key == SECRET_KEY:
+            try:
+                s = SeleniumScrap(selector) # //span[@class='converterresult-toAmount']
+                result = s.get(url)
 
-            s = SeleniumScrap(selector) # //span[@class='converterresult-toAmount']
-            result = s.fetch(url)
-
-            response = jsonify(
-                {
+                response = {
                     'status':'success',
+                    'code': 200,
                     'result': result
                 }
-            )
-        else:
-            response = jsonify(
-                {
+            except Exception:
+                get_trace()
+                response = {
                     'status':'error',
-                    'message': 'there is an error with the secret-key, check it again!' 
+                    'code': 500,
+                    'message': 'Something went wrong in the server, check logs !' 
                 }
-            )   
-    else:
-        response = jsonify(
-            {
+        else:
+            response = {
                 'status':'error',
-                'message': 'some parameters are missing amount:{}, from:{}, to:{} '.format(amount, from_, to_) 
+                'code': 400,
+                'message': 'There is an error with the secret-key, check it again!' 
             }
-        )
+    else:
+        response = {
+            'status':'error',
+            'code': 400,
+            'message': 'some parameters are missing secret_key:{}, url:{}, selector:{} '.format(secret_key, url, selector) 
+        }
 
     return response
 
@@ -57,13 +67,13 @@ def b64_encode(data):
     A simple base64 encoder
     
     """
-    encodedBytes = base64.b64encode(data.encode("utf-8"))
-    return str(encodedBytes, "utf-8")
+    encodedBytes = base64.b64encode(data.encode('utf-8'))
+    return encodedBytes.decode('utf-8')
 
 def b64_decode(data):
     """
     A simple base64 decoder
 
     """
-    message_bytes = base64.b64decode(data.encode('ascii'))
-    return message_bytes.decode('ascii')
+    message_bytes = base64.b64decode(data)
+    return  message_bytes.decode('utf-8')
