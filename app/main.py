@@ -14,6 +14,7 @@ app.config['Secret'] = "Secret"
 def index():
     response = scrap_html_content(
         request.args.get('secret_key'),
+        request.args.get('selector'),
         request.args.get('url')
     )
     # Let's allow all Origin requests

@@ -6,4 +6,4 @@ configFilePath = r'config.txt'
 configParser.read(configFilePath)
 
 # Filling parameters
-SECRET_KEY = configParser.get('config', 'SECRET_KEY')
+SECRET_KEY = configParser.get('conf', 'SECRET_KEY')

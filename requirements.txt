@@ -5,3 +5,4 @@ gunicorn
 requests==2.20.0
 beautifulsoup4==4.8.2
 selenium==3.141.0
+pytest
