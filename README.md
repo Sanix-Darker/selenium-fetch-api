@@ -45,7 +45,7 @@ sh ./start.sh
 # or just
 python -m app.main
 ```
-You can found the HTTP-DOCUMENTATIOn here : [CLICK ME]()
+You can found the HTTP-DOCUMENTATIOn here : [CLICK ME](https://documenter.getpostman.com/view/2696027/SztG46Bv?version=latest)
 
 ## How to test
 To perform tests for this application, you just have to run :
