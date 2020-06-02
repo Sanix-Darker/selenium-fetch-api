@@ -1,0 +1,5 @@
+config.txt
+.history
+.idea
+.vscode
+*__pycache__
